@@ -1,29 +1,53 @@
 # Personal Finance Chatbot
 
-An intelligent conversational AI system that provides personalized financial guidance for savings, taxes, and investments. Built with Streamlit, FastAPI, and IBM Watson AI services.
+An intelligent conversational AI system that provides personalized financial guidance for savings, taxes, and investments. Built with Streamlit, FastAPI, and multiple AI backends including IBM Watson and Hugging Face models.
 
 ## 🎯 Project Overview
 
-This Personal Finance Chatbot leverages IBM's generative AI models and Watson services to provide:
+This Personal Finance Chatbot leverages multiple AI services and models to provide:
 
 - **Personalized Financial Guidance** - Customized advice based on user profiles
 - **AI-Generated Budget Summaries** - Automatic budget analysis and recommendations
 - **Spending Insights and Suggestions** - Actionable recommendations for expense optimization
 - **Demographic-Aware Communication** - Adapts tone based on user type (student vs professional)
+- **Advanced NLP Analysis** - Real sentiment analysis, entity recognition, and keyword extraction
+- **Hybrid AI Architecture** - Multiple AI backends with fallback mechanisms for reliability
 - **Conversational NLP Experience** - Natural, context-aware interactions
 
 ## 🏗️ Architecture
 
+### Enhanced Hybrid AI Architecture
+
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Streamlit     │    │   FastAPI       │    │   IBM Watson    │
-│   Frontend      │◄──►│   Backend       │◄──►│   AI Services   │
-│                 │    │                 │    │                 │
-│ • Chat UI       │    │ • API Endpoints │    │ • NLU Analysis  │
-│ • Forms         │    │ • Data Processing│   │ • Response Gen  │
-│ • Visualizations│    │ • Validation    │    │ • Sentiment     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Streamlit     │    │   FastAPI       │    │   AI Service    │    │   Multiple AI   │
+│   Frontend      │◄──►│   Backend       │◄──►│   Layer         │◄──►│   Backends      │
+│                 │    │                 │    │                 │    │                 │
+│ • Chat UI       │    │ • API Endpoints │    │ • Smart Routing │    │ • IBM Watson    │
+│ • Forms         │    │ • Data Processing│   │ • Fallback Logic│    │ • Hugging Face  │
+│ • Visualizations│    │ • Validation    │    │ • Response Mgmt │    │ • Local Models  │
+│ • Charts        │    │ • Error Handling│    │ • Caching       │    │ • Fallback NLP  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
+
+### AI Service Integration Options
+
+The system supports multiple AI backends with automatic fallback:
+
+1. **Primary: IBM Watson Services**
+   - Watson NLU for text analysis
+   - Watsonx.ai for response generation
+   - Professional-grade accuracy
+
+2. **Alternative: Hugging Face Models**
+   - Open-source transformer models
+   - Local or cloud-based inference
+   - Cost-effective solution
+
+3. **Fallback: Rule-based System**
+   - Keyword extraction
+   - Template-based responses
+   - Always available backup
 
 ## 🚀 Features
 
@@ -109,6 +133,38 @@ STREAMLIT_PORT=8501
 1. Go to [IBM Watsonx.ai](https://www.ibm.com/products/watsonx-ai)
 2. Set up your project and get the necessary credentials
 3. Note your model ID and project ID
+
+### 6. Alternative: Hugging Face Integration (Optional)
+
+For enhanced AI capabilities or as an alternative to IBM Watson services, you can set up Hugging Face integration:
+
+#### Setup Instructions:
+1. Get a Hugging Face account at [huggingface.co](https://huggingface.co)
+2. Generate an access token from your account settings
+3. Add to your `.env` file:
+
+```bash
+# Hugging Face Configuration (Optional)
+HUGGINGFACE_TOKEN=your_huggingface_token_here
+
+# Model Configuration
+WATSONX_MODEL_NAME=distilgpt2
+NLU_MODEL_NAME=cardiffnlp/twitter-roberta-base-sentiment-latest
+NER_MODEL_NAME=dslim/bert-base-NER
+```
+
+#### Benefits:
+- **Cost-effective**: Use open-source models
+- **Local processing**: Run models locally for privacy
+- **Flexibility**: Choose from thousands of pre-trained models
+- **Fallback option**: Automatic fallback when primary services are unavailable
+
+#### Testing Hugging Face Setup:
+```bash
+python test_huggingface.py
+```
+
+For detailed setup instructions, see `HUGGINGFACE_SETUP.md`.
 
 ## 🚀 Running the Application
 
@@ -264,11 +320,232 @@ pip install -r requirements.txt
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+We welcome contributions from the community! This project is designed to be contributor-friendly with a modular architecture and comprehensive documentation.
+
+### 🚀 Getting Started for Contributors
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/personal-finance-chatbot.git
+   cd personal-finance-chatbot
+   ```
+3. **Set up the development environment** following the installation instructions above
+4. **Create a new branch** for your feature:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+### 📝 Contribution Guidelines
+
+#### Code Style and Standards
+- **Follow PEP 8** for Python code formatting
+- **Use type hints** for all function parameters and return values
+- **Write docstrings** for all functions and classes
+- **Keep functions focused** and single-purpose
+- **Use meaningful variable names**
+
+#### Architecture Guidelines
+- **Maintain separation of concerns** between frontend, backend, and AI services
+- **Add fallback mechanisms** for any new AI service integrations
+- **Include error handling** for all external API calls
+- **Follow the existing modular structure**
+- **Update documentation** for any architectural changes
+
+#### Testing Requirements
+- **Add tests** for all new features and bug fixes
+- **Ensure existing tests pass** before submitting PR
+- **Test both success and error scenarios**
+- **Run the full test suite**:
+  ```bash
+  python test_app.py
+  python test_huggingface.py  # If using Hugging Face features
+  ```
+
+#### Documentation Requirements
+- **Update README.md** for new features or setup changes
+- **Add inline code comments** for complex logic
+- **Update API documentation** for new endpoints
+- **Include examples** for new functionality
+- **Update IMPLEMENTATION_GUIDE.md** for architectural changes
+
+### 🎯 Areas for Contribution
+
+#### 🔥 High Priority
+- **Enhanced AI Models**: Integration with additional AI services (OpenAI, Anthropic, etc.)
+- **Real Financial Data**: Integration with banking APIs or financial data providers
+- **Advanced Analytics**: More sophisticated financial analysis and insights
+- **Mobile Responsiveness**: Better mobile UI/UX
+- **Performance Optimization**: Caching, database integration, response times
+
+#### 🔄 Medium Priority
+- **New Personas**: Additional user types (retirees, small business owners, etc.)
+- **Localization**: Multi-language support
+- **Visualization Enhancements**: Better charts and interactive elements
+- **Security Improvements**: Authentication, data encryption, audit trails
+- **Testing Coverage**: Expand test coverage and add integration tests
+
+#### 📦 Good for Beginners
+- **UI/UX Improvements**: CSS styling, better form layouts
+- **Documentation**: Improve existing docs, add tutorials
+- **Bug Fixes**: Fix issues reported in GitHub issues
+- **Code Refactoring**: Clean up code, improve readability
+- **Configuration**: Environment setup improvements
+
+### 🛠️ Development Setup
+
+#### Running Tests
+```bash
+# Run main application tests
+python test_app.py
+
+# Test AI model integrations
+python test_huggingface.py
+python test_ai_models.py
+
+# Test direct API calls
+python test_api_direct.py
+```
+
+#### Development Mode
+```bash
+# Backend with hot reload
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+# Frontend with auto-refresh
+streamlit run streamlit_app.py
+```
+
+#### Code Formatting
+```bash
+# Install development dependencies
+pip install black flake8 mypy
+
+# Format code
+black *.py
+
+# Check style
+flake8 *.py
+
+# Type checking
+mypy *.py
+```
+
+### 📝 Pull Request Process
+
+1. **Ensure your code follows** the style guidelines
+2. **Add or update tests** for your changes
+3. **Update documentation** as needed
+4. **Test your changes thoroughly**:
+   - Run the full test suite
+   - Test the UI manually
+   - Verify API endpoints work correctly
+5. **Create a descriptive PR title** and description:
+   - Explain what the change does
+   - Reference any related issues
+   - Include screenshots for UI changes
+   - List any breaking changes
+6. **Request review** from maintainers
+
+### 📚 Resources for Contributors
+
+#### Project Documentation
+- **IMPLEMENTATION_GUIDE.md**: Detailed code architecture explanation
+- **HUGGINGFACE_SETUP.md**: AI model integration guide
+- **API Documentation**: Available at `/docs` when backend is running
+- **Test Files**: Multiple test files for different components
+
+#### Learning Resources
+- **FastAPI Tutorial**: https://fastapi.tiangolo.com/tutorial/
+- **Streamlit Documentation**: https://docs.streamlit.io/
+- **IBM Watson SDK**: https://github.com/watson-developer-cloud/python-sdk
+- **Hugging Face Documentation**: https://huggingface.co/docs
+- **Transformers Library**: https://huggingface.co/docs/transformers
+
+## 🆕 Recent Updates & Changes
+
+### ✨ Latest Features (August 2025)
+
+#### 🤖 Enhanced AI Integration
+- **Hugging Face Support**: Added full integration with Hugging Face transformers
+- **Multiple AI Backends**: Smart routing between IBM Watson, Hugging Face, and fallback systems
+- **Real NLP Models**: Actual sentiment analysis, entity recognition, and keyword extraction
+- **Cost Optimization**: Use free open-source models as alternatives
+
+#### 🏢 Improved Architecture
+- **Hybrid AI System**: Multi-layered AI service with automatic failover
+- **Enhanced Error Handling**: Graceful degradation when services are unavailable
+- **Better Performance**: Optimized response times and caching
+- **Modular Design**: Easier to add new AI services and features
+
+#### 🛠️ Development Improvements
+- **Comprehensive Testing**: Multiple test suites for different components
+- **Better Documentation**: Detailed setup guides and implementation explanations
+- **Development Tools**: Hot reload, automated testing, code formatting
+- **Contributor Guidelines**: Clear processes for community contributions
+
+#### 🔒 Security & Reliability
+- **Environment Security**: Better secrets management with `.env` files
+- **Input Validation**: Enhanced data validation and sanitization
+- **Version Control**: Added `.gitignore` for secure development
+- **Fallback Mechanisms**: Always-available basic functionality
+
+### 💯 What's Changed Since Initial Release
+
+1. **AI Service Layer**: Completely redesigned with multiple backend support
+2. **Dependencies**: Updated to include Hugging Face transformers and advanced NLP libraries
+3. **Testing**: Added comprehensive test suite with multiple test files
+4. **Documentation**: Enhanced with detailed guides and contribution instructions
+5. **Configuration**: Improved setup process with better environment management
+6. **Error Handling**: More robust error handling and fallback systems
+7. **Performance**: Optimized for better response times and resource usage
+
+### 🚀 Upgrade Guide
+
+If you're upgrading from an earlier version:
+
+1. **Update Dependencies**: Run `pip install -r requirements.txt` to get new packages
+2. **Update Environment**: Add new environment variables (see `.env` example)
+3. **Test Integration**: Run the test suite to ensure everything works
+4. **Review Documentation**: Check new features in `HUGGINGFACE_SETUP.md`
+5. **Optional Setup**: Configure Hugging Face integration if desired
+
+### 🔎 What's Next
+
+Upcoming features and improvements:
+- Integration with additional AI providers (OpenAI, Anthropic)
+- Real-time financial data integration
+- Advanced analytics dashboard
+- Mobile-responsive UI improvements
+- Database integration for user sessions
+
+### 🚑 Reporting Issues
+
+When reporting bugs or requesting features:
+
+1. **Search existing issues** to avoid duplicates
+2. **Use issue templates** when available
+3. **Provide detailed information**:
+   - Steps to reproduce (for bugs)
+   - Expected vs actual behavior
+   - Environment details (OS, Python version, etc.)
+   - Error messages and logs
+4. **Add labels** to categorize the issue
+
+### 🏆 Recognition
+
+Contributors will be:
+- **Listed in the README** acknowledgments section
+- **Mentioned in release notes** for significant contributions
+- **Invited to join** the project maintainer team for outstanding contributions
+
+### 💬 Communication
+
+- **GitHub Issues**: For bug reports and feature requests
+- **GitHub Discussions**: For questions and general discussion
+- **Pull Request Reviews**: For code-related discussions
+
+We strive to be responsive and supportive to all contributors. Don't hesitate to ask questions or request help!
 
 ## 📝 License
 
