@@ -68,16 +68,32 @@ def check_api_health():
     except:
         return False
 
-def call_api(endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
-    """Make API call to backend"""
+def get_api_status():
+    """Get detailed API and AI service status"""
+    try:
+        response = requests.get(f"{API_BASE_URL}/health", timeout=5)
+        if response.status_code == 200:
+            return response.json()
+    except:
+        pass
+    return None
+
+def call_api(endpoint: str, data: Dict[str, Any], timeout: int = 90) -> Dict[str, Any]:
+    """Make API call to backend with configurable timeout"""
     try:
         response = requests.post(
             f"{API_BASE_URL}/{endpoint}",
             json=data,
-            timeout=30
+            timeout=timeout
         )
         response.raise_for_status()
         return response.json()
+    except requests.exceptions.Timeout:
+        st.error("⏰ Request timed out. The AI models might be loading for the first time (this can take up to 2 minutes). Please try again in a moment.")
+        return None
+    except requests.exceptions.ConnectionError:
+        st.error("🔌 Cannot connect to the backend server. Please make sure it's running on http://localhost:8000")
+        return None
     except requests.exceptions.RequestException as e:
         st.error(f"API Error: {str(e)}")
         return None
@@ -85,6 +101,25 @@ def call_api(endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
 def display_chat_interface():
     """Display the main chat interface"""
     st.title("💬 Financial Advisor Chat")
+    
+    # Get AI service status for display
+    api_status = get_api_status()
+    if api_status and "ai_services" in api_status:
+        ai_services = api_status["ai_services"]
+        
+        # Display AI model status
+        st.info(
+            f"🤖 **AI Status**: "
+            f"{'✅ Models Ready' if ai_services.get('models_loaded') else '⏳ Models Loading' if ai_services.get('models_loading') else '🔄 Will Load on First Use'} | "
+            f"{'🔴 Fallback Mode' if ai_services.get('fallback_mode') else '🟢 AI Mode'}"
+        )
+        
+        # Warning for first-time users
+        if not ai_services.get('models_loaded') and not ai_services.get('models_loading'):
+            st.warning(
+                "⏰ **First Request Notice**: The AI models will load on your first question, "
+                "which may take 1-2 minutes. Please be patient!"
+            )
     
     # Initialize chat history and response
     if "chat_history" not in st.session_state:
